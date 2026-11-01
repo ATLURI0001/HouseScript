@@ -1,58 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Page</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        button {
-            margin: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #ddd;
-        }
-    </style>
-</head>
-<body>
-    <h1>Control Game Outcome</h1>
-    <button onclick="setWinControl('win')">Win</button>
-    <button onclick="setWinControl('lose')">Lose</button>
-    <button onclick="setWinControl('random')">Random</button>
-
-    <script>
-        function setWinControl(control) {
-            fetch('/set-win-control', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ control }),
-            }).then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert(`Control set to ${control}`);
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Backstage — Odds Lab</title><link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./education.css"><script type="module" src="./control.js"></script></head><body>
+<header><a class="brand" href="./index.html">∴ ODDS LAB</a><nav aria-label="Main navigation"><a href="./index.html#lab">Probability lab</a><a href="./workflows.html">Site workflows</a></nav></header>
+<main><section class="section"><p class="eyebrow">BACKSTAGE / TRANSPARENT CONTROL ROOM</p><h1>Write the script.<br><em>See how a result can be staged.</em></h1><p class="intro">You control only your own fictional demo. Choose wins, losses, or a sequence, then compare the original random sample with the result the backend presents.</p><div class="disclosure"><strong>SIMULATION — NOT EVIDENCE AGAINST ANY COMPANY</strong><p>Scripted results are deliberately forced and always labelled. They do not follow the random model's win probability. This demonstrates a possible dishonest implementation, not how all gambling sites operate. A normal house edge needs no secret win/loss switch.</p></div><p class="muted">The separate probability lab remains random and cannot be changed from this page. No real account, deposit, personal data, prize, or withdrawal is involved.</p></section>
+<section class="section"><div class="lab-layout"><article class="sim-panel"><p class="eyebrow">01 / PLAN BEFORE THE FIRST ROUND</p><h2>Your teaching scenario</h2><label class="field">Outcome mode<select id="mode"><option value="random">Random — no override</option><option value="win">Script every result as a win</option><option value="loss">Script every result as a loss</option><option value="sequence">Use my win/loss sequence</option></select></label><label class="field">Sequence (W = win, L = loss; 1–20 entries)<input id="sequence" value="W W L L L" maxlength="60" autocomplete="off" aria-describedby="sequence-help"></label><p id="sequence-help" class="micro">Example: W W L L L. A fictional early-win / later-loss script for discussing misleading demonstrations. This is not a claim about an operator.</p><button id="connect" class="primary">Start this backend demo</button><p id="session-status" role="status" class="muted">Requires the Node server: npm start. Static-only hosting cannot run this demo.</p><button id="end" disabled>Delete my demo session</button></article>
+<article class="math-panel"><p class="eyebrow">02 / WATCH THE SERVER SETTLE A ROUND</p><h2 id="mode-badge">No session running</h2><label class="field">Teaching model<select id="game"><option value="mines">Mines — 3 mines, 3 safe target</option><option value="dice">Dice — under 49</option><option value="roulette">Roulette — red</option><option value="crash">Crash — 2× target</option><option value="slots">Slots — matching triple</option></select></label><p class="micro">10 virtual credits per round. The control room shows whole-round outcomes; it does not move tiles in the probability lab or simulate reaction-time cash-outs.</p><button id="observe" class="primary" disabled>Ask the backend for one result</button><div class="comparison"><div><span>Original random sample</span><strong id="original">—</strong><p id="sample-detail"></p></div><div><span>Presented result</span><strong id="presented">—</strong><p id="presented-detail"></p></div></div><p id="explanation" role="status">Every response will reveal whether an override was applied.</p><p class="micro">Server sessions expire after 30 minutes and stop at 20 rounds or the end of your sequence. Refreshing loses your session key; no cookie or browser storage is used.</p></article></div></section>
+<section class="section"><div class="section-head"><div><p class="eyebrow">03 / FOLLOW THE EVIDENCE</p><h2>The audit tells the whole story.</h2></div><button id="download" disabled>Export audit JSON ↓</button></div><p id="totals" class="muted">No observations recorded.</p><div class="table-scroll"><table><thead><tr><th>Round</th><th>Game</th><th>Plan</th><th>Sample</th><th>Presented</th><th>Override</th><th>Net</th></tr></thead><tbody id="audit"></tbody></table></div><details><summary>What can this prove — and what can't it?</summary><p>This audit proves what your own demo server reported. It is not a cryptographically independent attestation. A dishonest operator could fabricate both a result and an audit log. A screenshot or a streak alone cannot prove fairness or manipulation.</p><p>Ask whether rules and paytables were declared in advance, whether independent testing applies, whether a claimed verification scheme can be independently checked, and whether withdrawals and complaints are handled transparently. A provable-fairness claim does not guarantee payment or remove the house edge.</p><p>Great Britain's Gambling Commission RTS 7 requires acceptably random outcomes and prohibits adaptive outcome changes and fabricated near misses within its scope. Rules vary by jurisdiction. <a href="https://www.gamblingcommission.gov.uk/manual/the-prevention-of-money-laundering-and-combating-the-financing-of-terrorism/rts-7-generation-of-random-outcomes" target="_blank" rel="noopener noreferrer">Read RTS 7 ↗</a></p></details></section>
+<section class="section"><p class="eyebrow">THE REQUEST PATH</p><div class="pipeline"><span>Visitor chooses a disclosed plan</span><span>Server samples the model</span><span>Server applies the disclosed override</span><span>Ledger records stake, return, and net</span><span>Both results appear in the audit</span></div><p class="muted">Each visitor receives a separate temporary session. There is no admin switch for other visitors and no hidden override route.</p><a href="./workflows.html">Explore the full fictional site journey →</a></section></main><footer><a href="./index.html">← Probability lab</a><span>Education, not a gambling service.</span></footer></body></html>

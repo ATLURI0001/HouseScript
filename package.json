@@ -1,16 +1,6 @@
 {
-  "name": "gamble",
-  "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.19.2"
-  }
+  "name": "odds-lab", "version": "3.0.0", "private": true,
+  "description": "A classroom probability lab for gambling awareness. Virtual credits only.",
+  "type": "module", "scripts": {"start": "node server.js", "dev": "node server.js", "test": "node --test"},
+  "engines": {"node": ">=20"}
 }
